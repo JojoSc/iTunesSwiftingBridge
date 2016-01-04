@@ -30,6 +30,12 @@ extension iTunesApplication {
     }
 
 
+    func playPlayList(name:String) {
+        let script = "tell application \"iTunes\"\n    play user playlist \"\(name)\"\nend tell"
+        let scriptObject = NSAppleScript(source: script)
+        _ = scriptObject?.executeAndReturnError(nil)
+    }
+
 
 
     /** 

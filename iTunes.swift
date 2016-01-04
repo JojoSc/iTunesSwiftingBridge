@@ -105,22 +105,24 @@ import ScriptingBridge
 };
 
 
+@objc protocol iTunesGenericMethods {
 
-//	optional func printPrintDialog(printDialog: Bool, withProperties: iTunesPrintSettings, kind: iTunesEKnd, theme: NSString)
-//// Print the specified object(s)
-//	optional func close()
-//// Close an object
-//	optional func delete()
-//// Delete an element from an object
-//	optional func duplicateTo(to: SBObject) -> SBObject
-//// Duplicate one or more object(s)
-//	optional func exists() -> Bool
-//// Verify if an object exists
-//	optional func open()
-//// open the specified object(s)
-//	optional func playOnce(once: Bool)
-//// play the current track or the specified track or file.
+	optional func printPrintDialog(printDialog: Bool, withProperties: iTunesPrintSettings, kind: iTunesEKnd, theme: NSString)
+// Print the specified object(s)
+	optional func close()
+// Close an object
+	optional func delete()
+// Delete an element from an object
+	optional func duplicateTo(to: SBObject) -> SBObject
+// Duplicate one or more object(s)
+	optional func exists() -> Bool
+// Verify if an object exists
+	optional func open()
+// open the specified object(s)
+	optional func playOnce(once: Bool)
+// play the current track or the specified track or file.
 
+}
 
 
 /*
@@ -174,25 +176,24 @@ extension SBObject: iTunesPrintSettings{}
 // The application program
 @objc protocol iTunesApplication {
 
-//	optional func AirPlayDevices() -> SBElementArray<iTunesAirPlayDevice *>
-//	optional func browserWindows() -> SBElementArray<iTunesBrowserWindow *>
-//	optional func encoders() -> SBElementArray<iTunesEncoder *>
-//	optional func EQPresets() -> SBElementArray<iTunesEQPreset *>
-//	optional func EQWindows() -> SBElementArray<iTunesEQWindow *>
-//	optional func playlistWindows() -> SBElementArray<iTunesPlaylistWindow *>
-
+	optional func AirPlayDevices() -> [iTunesAirPlayDevice]
+	optional func browserWindows() -> [iTunesBrowserWindow]
+	optional func encoders() -> [iTunesEncoder]
+	optional func EQPresets() -> [iTunesEQPreset]
+    optional func EQWindows() -> [iTunesEQWindow]
+    optional func playlistWindows() -> [iTunesPlaylistWindow]
     optional func sources() -> [iTunesSource]
+    optional func visuals() -> [iTunesVisual]
+    optional func windows() -> [iTunesWindow]
 
-//	optional func visuals() -> SBElementArray<iTunesVisual *>
-//	optional func windows() -> SBElementArray<iTunesWindow *>
-//	optional var AirPlayEnabled: Bool {get}
-// is AirPlay currently enabled?
+    // is AirPlay currently enabled?
+    optional var AirPlayEnabled: Bool {get}
 
     // is a track currently being converted?
     optional var converting: Bool {get}
 
     // the currently selected AirPlay device(s)
-    // optional var currentAirPlayDevices: *> {get set}
+    optional var currentAirPlayDevices: [iTunesAirPlayDevice] {get set}
 
     // the currently selected encoder (MP3, AIFF, WAV, etc.)
     optional var currentEncoder: iTunesEncoder {get set}
@@ -213,7 +214,7 @@ extension SBObject: iTunesPrintSettings{}
     optional var currentTrack: iTunesTrack {get}
 
     // the currently selected visual plug-in
-    // optional var currentVisual: iTunesVisual {get set}
+    optional var currentVisual: iTunesVisual {get set}
 
     // is the equalizer enabled?
     optional var EQEnabled: Bool {get set}
@@ -273,7 +274,7 @@ extension SBObject: iTunesPrintSettings{}
     optional func backTrack()
 
     // convert one or more files or tracks
-    // optional func convert(x: NSArray<SBObject *>) -> iTunesTrack
+    optional func convert(x: [SBObject]) -> iTunesTrack
 
     // skip forward in a playing track
     optional func fastForward()
@@ -375,18 +376,24 @@ extension SBObject: iTunesAirPlayDevice{}
 
 // a piece of art within a track
 @objc protocol iTunesArtwork: iTunesItem {
+
+    // data for this artwork, in the form of a picture
 	optional var data: NSImage {get set}
-// data for this artwork, in the form of a picture
-	optional var objectDescription: NSString {get set}
-// description of artwork as a string
-	optional var downloaded: Bool {get}
-// was this artwork downloaded by iTunes?
-	optional var format: NSNumber {get}
-// the data format for this piece of artwork
-	optional var kind: NSInteger {get set}
-// kind or purpose of this piece of artwork
-	optional var rawData: NSData {get set}
-// data for this artwork, in original format
+
+    // description of artwork as a string
+    optional var objectDescription: NSString {get set}
+
+    // was this artwork downloaded by iTunes?
+    optional var downloaded: Bool {get}
+
+    // the data format for this piece of artwork
+    optional var format: NSNumber {get}
+
+    // kind or purpose of this piece of artwork
+    optional var kind: NSInteger {get set}
+
+    // data for this artwork, in original format
+    optional var rawData: NSData {get set}
 }
 
 
@@ -401,40 +408,59 @@ extension SBObject: iTunesArtwork{}
 
 
 extension SBObject: iTunesEncoder{}
+
+
+
 // equalizer preset configuration
 @objc protocol iTunesEQPreset: iTunesItem {
+
 	optional var band1: CDouble {get set}
 // the equalizer 32 Hz band level (-12.0 dB to +12.0 dB)
-	optional var band2: CDouble {get set}
+
+    optional var band2: CDouble {get set}
 // the equalizer 64 Hz band level (-12.0 dB to +12.0 dB)
-	optional var band3: CDouble {get set}
+
+    optional var band3: CDouble {get set}
 // the equalizer 125 Hz band level (-12.0 dB to +12.0 dB)
-	optional var band4: CDouble {get set}
+
+    optional var band4: CDouble {get set}
 // the equalizer 250 Hz band level (-12.0 dB to +12.0 dB)
-	optional var band5: CDouble {get set}
+
+    optional var band5: CDouble {get set}
 // the equalizer 500 Hz band level (-12.0 dB to +12.0 dB)
-	optional var band6: CDouble {get set}
+
+    optional var band6: CDouble {get set}
 // the equalizer 1 kHz band level (-12.0 dB to +12.0 dB)
-	optional var band7: CDouble {get set}
+
+    optional var band7: CDouble {get set}
 // the equalizer 2 kHz band level (-12.0 dB to +12.0 dB)
-	optional var band8: CDouble {get set}
+
+    optional var band8: CDouble {get set}
 // the equalizer 4 kHz band level (-12.0 dB to +12.0 dB)
-	optional var band9: CDouble {get set}
+
+    optional var band9: CDouble {get set}
 // the equalizer 8 kHz band level (-12.0 dB to +12.0 dB)
-	optional var band10: CDouble {get set}
+
+    optional var band10: CDouble {get set}
 // the equalizer 16 kHz band level (-12.0 dB to +12.0 dB)
-	optional var modifiable: Bool {get}
+
+    optional var modifiable: Bool {get}
 // can this preset be modified?
-	optional var preamp: CDouble {get set}
+
+    optional var preamp: CDouble {get set}
 // the equalizer preamp level (-12.0 dB to +12.0 dB)
-	optional var updateTracks: Bool {get set}
+
+    optional var updateTracks: Bool {get set}
 // should tracks which refer to this preset be updated when the preset is renamed or deleted?
 }
+
+
+
 extension SBObject: iTunesEQPreset{}
 // a list of songs/streams
 @objc protocol iTunesPlaylist: iTunesItem {
-//	optional func tracks() -> SBElementArray<iTunesTrack *>
-//	optional var duration: NSInteger {get}
+	optional func tracks() -> [iTunesTrack]
+	optional var duration: NSInteger {get}
 // the total length of all songs (in seconds)
 	optional var name: NSString {get set}
 // the name of the playlist
@@ -466,8 +492,8 @@ extension SBObject: iTunesPlaylist{}
 
 @objc protocol iTunesAudioCDPlaylist: iTunesPlaylist {
 
-//    // a playlist representing an audio CD
-//	optional func audioCDTracks() -> SBElementArray<iTunesAudioCDTrack *>
+    // a playlist representing an audio CD
+	optional func audioCDTracks() -> [iTunesAudioCDTrack]
 
     // the artist of the CD
 	optional var artist: NSString {get set}
@@ -495,11 +521,12 @@ extension SBObject: iTunesPlaylist{}
 
 extension SBObject: iTunesAudioCDPlaylist{}
 
+
 // the master music library playlist
 @objc protocol iTunesLibraryPlaylist: iTunesPlaylist {
-//	optional func fileTracks() -> SBElementArray<iTunesFileTrack *>
-//	optional func URLTracks() -> SBElementArray<iTunesURLTrack *>
-//	optional func sharedTracks() -> SBElementArray<iTunesSharedTrack *>
+	optional func fileTracks() -> [iTunesFileTrack]
+	optional func URLTracks() -> [iTunesURLTrack]
+	optional func sharedTracks() -> [iTunesSharedTrack]
 }
 
 
@@ -507,39 +534,50 @@ extension SBObject: iTunesLibraryPlaylist{}
 
 // the radio tuner playlist
 @objc protocol iTunesRadioTunerPlaylist: iTunesPlaylist {
-//	optional func URLTracks() -> SBElementArray<iTunesURLTrack *>
+	optional func URLTracks() -> [iTunesURLTrack]
 }
 
 
 extension SBObject: iTunesRadioTunerPlaylist{}
+
+
 // a music source (music library, CD, device, etc.)
 @objc protocol iTunesSource: iTunesItem {
-//	optional func audioCDPlaylists() -> SBElementArray<iTunesAudioCDPlaylist *>
-//	optional func libraryPlaylists() -> SBElementArray<iTunesLibraryPlaylist *>
 
+	optional func audioCDPlaylists() -> [iTunesAudioCDPlaylist]
+	optional func libraryPlaylists() -> [iTunesLibraryPlaylist]
     optional func playlists() -> [iTunesPlaylist]
+	optional func radioTunerPlaylists() -> [iTunesRadioTunerPlaylist]
+	optional func userPlaylists() -> [iTunesUserPlaylist]
 
-//	optional func radioTunerPlaylists() -> SBElementArray<iTunesRadioTunerPlaylist *>
-//	optional func userPlaylists() -> SBElementArray<iTunesUserPlaylist *>
-//	optional var capacity: CLong {get}
+	optional var capacity: CLong {get}
 // the total size of the source if it has a fixed size
-	optional var freeSpace: CLong {get}
+
+    optional var freeSpace: CLong {get}
 // the free space on the source if it has a fixed size
-	optional var kind: iTunesESrc {get}
-	optional func update()
+
+    optional var kind: iTunesESrc {get}
+
+    optional func update()
 // update the specified iPod
-	optional func eject()
+
+    optional func eject()
 // eject the specified iPod
 }
+
 extension SBObject: iTunesSource{}
+
+
 // playable audio source
 @objc protocol iTunesTrack: iTunesItem {
-//	optional func artworks() -> SBElementArray<iTunesArtwork *>
-//	optional var album: NSString {get set}
+
+	optional func artworks() -> [iTunesArtwork]
+
+	optional var album: NSString {get set}
 // the album name of the track
-//	optional var albumArtist: NSString {get set}
+	optional var albumArtist: NSString {get set}
 // the album artist of the track
-//	optional var albumLoved: Bool {get set}
+	optional var albumLoved: Bool {get set}
 // is the album for this track loved?
 	optional var albumRating: NSInteger {get set}
 // the rating of the album for this track (0 to 100)
@@ -669,9 +707,9 @@ extension SBObject: iTunesTrack{}
 // the location of the file represented by this track
 }
 
-
-
 extension SBObject: iTunesAudioCDTrack{}
+
+
 // a track representing an audio file (MP3, AIFF, etc.)
 @objc protocol iTunesFileTrack: iTunesTrack {
 	optional var location: NSURL {get set}
@@ -679,11 +717,16 @@ extension SBObject: iTunesAudioCDTrack{}
 	optional func refresh()
 // update file track information from the current information in the track’s file
 }
+
 extension SBObject: iTunesFileTrack{}
+
+
 // a track residing in a shared library
 @objc protocol iTunesSharedTrack: iTunesTrack {
 }
+
 extension SBObject: iTunesSharedTrack{}
+
 // a track representing a network stream
 @objc protocol iTunesURLTrack: iTunesTrack {
 	optional var address: NSString {get set}
@@ -698,10 +741,11 @@ extension SBObject: iTunesURLTrack{}
 
 // custom playlists created by the user
 @objc protocol iTunesUserPlaylist: iTunesPlaylist {
-//	optional func fileTracks() -> SBElementArray<iTunesFileTrack *>
-//	optional func URLTracks() -> SBElementArray<iTunesURLTrack *>
-//	optional func sharedTracks() -> SBElementArray<iTunesSharedTrack *>
-//	optional var shared: Bool {get set}
+	optional func fileTracks() -> [iTunesFileTrack]
+	optional func URLTracks() -> [iTunesURLTrack]
+	optional func sharedTracks() -> [iTunesSharedTrack]
+
+	optional var shared: Bool {get set}
 // is this playlist shared?
 	optional var smart: Bool {get}
 // is this a Smart Playlist?
@@ -713,14 +757,19 @@ extension SBObject: iTunesURLTrack{}
 extension SBObject: iTunesUserPlaylist{}
 
 
-//// a folder that contains other playlists
-//@objc protocol iTunesFolderPlaylist: iTunesUserPlaylist {
-//}
-//extension SBObject: iTunesFolderPlaylist{}
-//// a visual plug-in
-//@objc protocol iTunesVisual: iTunesItem {
-//}
-//extension SBObject: iTunesVisual{}
+// a folder that contains other playlists
+@objc protocol iTunesFolderPlaylist: iTunesUserPlaylist {
+}
+
+extension SBObject: iTunesFolderPlaylist{}
+
+// a visual plug-in
+@objc protocol iTunesVisual: iTunesItem {
+}
+
+extension SBObject: iTunesVisual{}
+
+
 // any window
 @objc protocol iTunesWindow: iTunesItem {
 	optional var bounds: NSRect {get set}
